@@ -27,10 +27,9 @@ print(base_dados.describe())
 
 base_dados = base_dados.dropna()  # Todos os valores vazios serão removidos da base de dados
 
-base_dados = base_dados.rename(columns={'ï»¿Index': 'Index'})  # Renomeação da coluna index
-base_dados = base_dados.rename(columns={'Volume': 'Volume de Transações'})
+base_dados = base_dados.rename(columns={'ï»¿Index': 'Index', 'Volume': 'Volume de Transações'})  # Renomeação da coluna index
 
-base_dados_atualizada = base_dados[['Index', 'Date', 'Open', 'Close', 'Volume de Transações']]
+base_dados_atualizada = base_dados[['Index', 'Date', 'Open', 'Close', 'Volume de Transações']] 
 print(base_dados_atualizada)
 print(base_dados_atualizada.info())
 
