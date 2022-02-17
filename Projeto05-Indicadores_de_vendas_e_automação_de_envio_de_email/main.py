@@ -75,5 +75,18 @@ mail.HTMLBody = f'''
 <p>Att.,</p>
 <p>Victor Sayoan</p>
 '''
+
+anexo1 = r'E:\Projetos - Análise de Dados\Projeto07-Indicadores_de_vendas_e_automação_de_envio_de_email\imagens\
+Faturamento_Total'
+anexo2 = r'E:\Projetos - Análise de Dados\Projeto07-Indicadores_de_vendas_e_automação_de_envio_de_email\imagens\
+Faturamento_medio'
+anexo3 = r'E:\Projetos - Análise de Dados\Projeto07-Indicadores_de_vendas_e_automação_de_envio_de_email\imagens\
+Quantidade_vendida'
+anexo4 = r'E:\Projetos - Análise de Dados\Projeto07-Indicadores_de_vendas_e_automação_de_envio_de_email\imagens\
+Ticket_medio'
+mail.Attachments.Add(anexo1)
+mail.Attachments.Add(anexo2)
+mail.Attachments.Add(anexo3)
+mail.Attachments.Add(anexo4)
 mail.Send()
 print('\nRelatório enviado!')
