@@ -14,7 +14,7 @@ for arquivos in lista_arquivos_total:  # Percorre todos os arquivos em lista_arq
         tabela = pd.read_csv(fr'E:\Projetos - Análise de Dados\Indicadores_de_vendas_e_devolução\Vendas\{arquivos}')
         # Atribuí estes arquivos a uma nova tabela que terá apenas os arquivos com os documentos de vendas:
         # Passo 3 -> Tratar / compilar as bases de dados:
-        tabela_vendas = tabela_vendas.append(tabela)
+        tabela_vendas.append(tabela)
 # print()
 # print(tabela_vendas)
 
