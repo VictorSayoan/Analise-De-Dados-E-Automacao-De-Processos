@@ -59,7 +59,7 @@ dados_combinados_vendas.to_csv('dados_combinados.csv', index=False)
 app.layout = dbc.Container(children=[
 # Row 1:
     dbc.Row([ # Linha 1 da tela
-        dbc.Col([
+        dbc.Col([ # Primeiro Card
             dbc.Card([
                 dbc.CardBody([
                     dbc.Row([
@@ -86,7 +86,7 @@ app.layout = dbc.Container(children=[
             ], style=tab_card),
         ], sm=4, lg=3),
 
-        dbc.Col([
+        dbc.Col([ # Segundo Card
             dbc.Card([
                 dbc.CardBody([
                     dbc.Row([
@@ -103,6 +103,19 @@ app.layout = dbc.Container(children=[
             ], style=tab_card),
         ], sm=12, lg=6),
 
+        dbc.Col([
+            dbc.Card([
+                dbc.CardBody([
+                    dcc.Graph(id='graph2', className='dbc', config=config_graph)
+                ])
+            ], style=tab_card)
+        ], sm=12, lg=3)
+
+    ], class_name='g-2 my-auto', style={'margin-top':'7px'}),
+    
+    # Row 2:
+    dbc.Row([
+
     ], class_name='g-2 my-auto', style={'margin-top':'7px'})
 
 ], fluid=True, style={'height':'100vh'})
@@ -110,7 +123,7 @@ app.layout = dbc.Container(children=[
 
 # ======== Callbacks ======== #
 
-#graph 1:
+# ================= graph 1:
 @app.callback(
     Output('graph1', 'figure'),
     Input(ThemeSwitchAIO.ids.switch("theme"), "value")
@@ -123,11 +136,34 @@ def graph1(toggle):
     Loja_Mais_Produtiva=Loja_Mais_Produtiva[['Quantidade Vendida']].sort_values(by='Quantidade Vendida', ascending=False)
 
     fig1 = px.bar(Loja_Mais_Produtiva, x=Loja_Mais_Produtiva.index, y='Quantidade Vendida',
-                  hover_data=['Quantidade Vendida', Loja_Mais_Produtiva.index], color='Quantidade Vendida',
+                  hover_data=['Quantidade Vendida', Loja_Mais_Produtiva.index], color=Loja_Mais_Produtiva['Quantidade Vendida'],
                   labels={'Quantidade Vendida':'Quantidade Vendida'}, height=200)
     fig1.update_layout(main_config, template=template)
-    
+    fig1.update_layout({"margin": {"l":0, "r":0, "t":5, "b":0}})
     return fig1
+
+# ================= graph 2:
+@app.callback(
+    Output('graph2', 'figure'),
+    Input(ThemeSwitchAIO.ids.switch("theme"), "value")
+)
+def graph2(toggle):
+    template=template_theme1 if toggle else template_theme2
+
+    Loja_Mais_Produtiva = dados_combinados_vendas.groupby('Loja').sum()
+    Loja_Mais_Produtiva=Loja_Mais_Produtiva[['Quantidade Vendida']].sort_values(by='Quantidade Vendida', ascending=False).reset_index()
+
+    fig2 = go.Figure()
+    fig2.add_trace(go.Indicator(
+    mode='number+delta',
+    title={"text": f"<span>{Loja_Mais_Produtiva['Loja'].iloc[0]} - Top Shop</span><br><span style='font-size:70%'>In sales in relation to the second shop</span><br>"},
+    value=Loja_Mais_Produtiva['Quantidade Vendida'].iloc[0],
+    delta={'relative': True, 'valueformat': '.1%', 'reference': Loja_Mais_Produtiva['Quantidade Vendida'].iloc[1]}
+))
+    fig2.update_layout(main_config, height=200, template=template)
+    fig2.update_layout({"margin": {"l":40, "r":40, "t":70, "b":40}})
+    return fig2
+
 
 
 # ====== Run Server ====== # 
