@@ -165,7 +165,6 @@ def graph2(toggle):
     return fig2
 
 
-
 # ====== Run Server ====== # 
 
 if __name__ == '__main__':
