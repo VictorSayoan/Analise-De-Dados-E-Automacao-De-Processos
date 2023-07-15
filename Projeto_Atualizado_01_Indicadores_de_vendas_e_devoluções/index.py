@@ -91,7 +91,7 @@ app.layout = dbc.Container(children=[
                 dbc.CardBody([
                     dbc.Row([
                         dbc.Col([
-                            html.Legend('Best Sellings Products')
+                            html.Legend('Best Sellings Shops')
                         ]),
                     dbc.Row([
                         dbc.Col([
@@ -115,13 +115,31 @@ app.layout = dbc.Container(children=[
     
     # Row 2:
     dbc.Row([
-        dbc.Col([
+        dbc.Col([ # Primeiro Card
             dbc.Card([
                 dbc.CardBody([
-                    dcc.Graph(id='graph3', className='dbc', config=config_graph)
+                    dbc.Row([
+                        html.Legend('Best Selling Products')
+                    ]),
+                    dbc.Row([
+                        dcc.Graph(id='graph3', className='dbc', config=config_graph)
+                    ])
                 ])
             ], style=tab_card)
-        ], sm=12, lg=6)
+        ], sm=12, lg=6),
+
+        dbc.Col([ # Segundo Card
+            dbc.Card([
+                dbc.CardBody([
+                    dbc.Row([
+                        html.Legend('Best Selling Product By Store')
+                    ]),
+                    dbc.Row([
+                        dcc.Graph(id='graph4', className='dbc', config=config_graph)
+                    ])
+                ])
+            ], style=tab_card)
+        ], sm=12, lg=3)
     ], class_name='g-2 my-auto', style={'margin-top':'7px'})
 
 ], fluid=True, style={'height':'100vh'})
@@ -188,8 +206,28 @@ def graph3(toggle):
               labels={'Quantidade Vendida':'Quantidade Vendida'}, height=200)
     fig3.update_layout(main_config, template=template)
     fig3.update_layout({"margin":{"l":0, "r":0, "t":5, "b":0}})
-
     return fig3
+
+
+# ================= graph 4:
+
+@app.callback(
+    Output('graph4', 'figure'),
+    Input(ThemeSwitchAIO.ids.switch("theme"), "value")
+)
+def graph4(toggle):
+    template = template_theme1 if toggle else template_theme2
+
+    Produto_mais_vendido_Loja = dados_combinados_vendas.groupby(['Loja', 'Produto'])['Quantidade Vendida'].sum()
+    Produto_mais_vendido_Loja = Produto_mais_vendido_Loja.sort_values(ascending=False)
+    Produto_mais_vendido_Loja = Produto_mais_vendido_Loja.groupby('Loja').head(1).reset_index()
+
+    fig4 = go.Figure()
+    fig4.add_trace(go.Pie(labels=Produto_mais_vendido_Loja['Loja']+'-'+Produto_mais_vendido_Loja['Produto'], values=Produto_mais_vendido_Loja['Quantidade Vendida'], hole=.5))
+    fig4.update_layout(main_config, template=template, height=200, showlegend=False)
+    fig4.update_layout({"margin":{"l":0, "r":0, "t":5, "b":0}})
+    return fig4
+
 
 # ====== Run Server ====== # 
 
