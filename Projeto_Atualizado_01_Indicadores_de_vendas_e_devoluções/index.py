@@ -101,7 +101,7 @@ app.layout = dbc.Container(children=[
                     ])
                 ]),
             ], style=tab_card),
-        ], sm=12, lg=6),
+        ], sm=8, lg=6),
 
         dbc.Col([
             dbc.Card([
@@ -115,7 +115,13 @@ app.layout = dbc.Container(children=[
     
     # Row 2:
     dbc.Row([
-
+        dbc.Col([
+            dbc.Card([
+                dbc.CardBody([
+                    dcc.Graph(id='graph3', className='dbc', config=config_graph)
+                ])
+            ], style=tab_card)
+        ], sm=12, lg=6)
     ], class_name='g-2 my-auto', style={'margin-top':'7px'})
 
 ], fluid=True, style={'height':'100vh'})
@@ -164,6 +170,26 @@ def graph2(toggle):
     fig2.update_layout({"margin": {"l":40, "r":40, "t":70, "b":40}})
     return fig2
 
+
+# ================= graph 3:
+@app.callback(
+    Output('graph3', 'figure'),
+    Input(ThemeSwitchAIO.ids.switch("theme"), "value")
+)
+def graph3(toggle):
+    template = template_theme1 if toggle else template_theme2
+
+    Produtos_mais_vendidos=dados_combinados_vendas.groupby('Produto').sum()
+    Produtos_mais_vendidos=Produtos_mais_vendidos[['Quantidade Vendida']].sort_values(by='Quantidade Vendida', ascending=False)
+    Produtos_mais_vendidos
+
+    fig3 = px.bar(Produtos_mais_vendidos, x=Produtos_mais_vendidos.index, y='Quantidade Vendida',
+              hover_data=['Quantidade Vendida', Produtos_mais_vendidos.index], color='Quantidade Vendida',
+              labels={'Quantidade Vendida':'Quantidade Vendida'}, height=200)
+    fig3.update_layout(main_config, template=template)
+    fig3.update_layout({"margin":{"l":0, "r":0, "t":5, "b":0}})
+
+    return fig3
 
 # ====== Run Server ====== # 
 
