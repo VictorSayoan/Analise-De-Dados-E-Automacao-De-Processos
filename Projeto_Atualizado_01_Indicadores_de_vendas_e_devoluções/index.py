@@ -139,6 +139,19 @@ app.layout = dbc.Container(children=[
                     ])
                 ])
             ], style=tab_card)
+        ], sm=12, lg=3),
+
+        dbc.Col([
+            dbc.Card([
+                dbc.CardBody([
+                    dbc.Row([
+                                dcc.Graph(id='Indicator2', className='dbc', config=config_graph)
+                    ]),
+                    dbc.Row([
+                        dcc.Graph(id='Indicator3', className='dbc', config=config_graph)
+                    ])
+                ])
+            ], style=tab_card),
         ], sm=12, lg=3)
     ], class_name='g-2 my-auto', style={'margin-top':'7px'})
 
@@ -229,6 +242,51 @@ def graph4(toggle):
     return fig4
 
 
+@app.callback(
+    Output('Indicator2', 'figure'),
+    Input(ThemeSwitchAIO.ids.switch("theme"), "value")
+)
+def indicator2(toggle):
+    template = template_theme1 if toggle else template_theme2
+
+    dados_combinados_vendas['Faturamento']=dados_combinados_vendas['Quantidade Vendida'] * dados_combinados_vendas['Preco Unitario']
+    dados_faturamento = dados_combinados_vendas.groupby('Produto').sum().reset_index()
+    dados_faturamento = dados_faturamento[['Produto','Faturamento']].sort_values(by='Faturamento', ascending=False)
+
+    fig5=go.Figure()
+    fig5.add_trace(go.Indicator(
+    mode='number+delta',
+    title={"text": f"<span>{dados_faturamento['Produto'].iloc[0]} - Top Product</span><br><span style='font-size:70%'>Best Selling Product</span><br>"},
+    value=dados_faturamento['Faturamento'].iloc[0],
+    delta={'relative':True, 'valueformat':'.1%', 'reference':dados_faturamento['Faturamento'].iloc[1]}
+    ))
+    fig5.update_layout(main_config, template=template, height=100)
+    fig5.update_layout({"margin": {"l":5, "r":5, "t":50, "b":5}})
+
+    return fig5
+
+@app.callback(
+    Output('Indicator3', 'figure'),
+    Input(ThemeSwitchAIO.ids.switch("theme"), "value")
+)
+def indicator(toggle):
+    template=template_theme1 if toggle else template_theme2
+
+    Vendedor_Mais_Vendeu = dados_combinados_vendas.groupby(['Primeiro Nome']).sum()
+    Vendedor_Mais_Vendeu=Vendedor_Mais_Vendeu[['Preco Unitario']].sort_values(by='Preco Unitario', ascending=False).reset_index()
+
+    fig6=go.Figure()
+    fig6.add_trace(go.Indicator(
+    mode='number+delta',
+    title={"text": f"<span>{Vendedor_Mais_Vendeu['Primeiro Nome'].iloc[0]} - Top Seller</span><br><span style='font-size:70%'>Best Seller Among Stores </span><br>"},
+    value=Vendedor_Mais_Vendeu['Preco Unitario'].iloc[0],
+    delta={'relative':True, 'valueformat':'.1%', 'reference':Vendedor_Mais_Vendeu['Preco Unitario'].iloc[1]}
+    ))
+
+    fig6.update_layout(main_config, template=template, height=100)
+    fig6.update_layout({"margin": {"l":5, "r":5, "t":50, "b":5}})
+
+    return fig6
 # ====== Run Server ====== # 
 
 if __name__ == '__main__':
