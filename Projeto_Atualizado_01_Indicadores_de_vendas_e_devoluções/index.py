@@ -144,10 +144,10 @@ app.layout = dbc.Container(children=[
         dbc.Col([
             dbc.Card([
                 dbc.CardBody([
-                    dbc.Row([
+                    dbc.Col([
                         dcc.Graph(id='Indicator2', className='dbc', config=config_graph)
                     ]),
-                    dbc.Row([
+                    dbc.Col([
                         dcc.Graph(id='Indicator3', className='dbc', config=config_graph)
                     ])
                 ])
