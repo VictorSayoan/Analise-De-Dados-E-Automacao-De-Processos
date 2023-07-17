@@ -145,7 +145,7 @@ app.layout = dbc.Container(children=[
             dbc.Card([
                 dbc.CardBody([
                     dbc.Row([
-                                dcc.Graph(id='Indicator2', className='dbc', config=config_graph)
+                        dcc.Graph(id='Indicator2', className='dbc', config=config_graph)
                     ]),
                     dbc.Row([
                         dcc.Graph(id='Indicator3', className='dbc', config=config_graph)
