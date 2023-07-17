@@ -260,7 +260,7 @@ def indicator2(toggle):
     value=dados_faturamento['Faturamento'].iloc[0],
     delta={'relative':True, 'valueformat':'.1%', 'reference':dados_faturamento['Faturamento'].iloc[1]}
     ))
-    fig5.update_layout(main_config, template=template, height=100)
+    fig5.update_layout(main_config, template=template, height=150)
     fig5.update_layout({"margin": {"l":5, "r":5, "t":50, "b":5}})
 
     return fig5
@@ -283,11 +283,11 @@ def indicator(toggle):
     delta={'relative':True, 'valueformat':'.1%', 'reference':Vendedor_Mais_Vendeu['Preco Unitario'].iloc[1]}
     ))
 
-    fig6.update_layout(main_config, template=template, height=100)
-    fig6.update_layout({"margin": {"l":5, "r":5, "t":50, "b":5}})
+    fig6.update_layout(main_config, template=template, height=150)
+    fig6.update_layout({"margin": {"l":5, "r":5, "t":70, "b":5}})
 
     return fig6
 # ====== Run Server ====== # 
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8051)
+    app.run_server(debug=False, port=8051)
