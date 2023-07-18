@@ -79,11 +79,11 @@ app.layout = dbc.Container(children=[
                 dbc.CardBody([
                     dbc.Row([
                         dbc.Col([
-                            html.Legend('Stores With More Returns'),
+                            html.H4('Stores With More Returns'),
                             dcc.Graph(id='graph1', className='dbc', config=config_graph)
                             ]),
                         dbc.Col([
-                            html.Legend('Most returned Products in All Stores'),
+                            html.H4('Most returned Products in All Stores'),
                             dcc.Graph(id='graph2', className='dbc', config=config_graph)
                             ])
                     ])
@@ -97,7 +97,7 @@ app.layout = dbc.Container(children=[
         dbc.Col([
             dbc.Card([
                 dbc.CardBody([
-                    html.Legend('Most Returned Product by Store'),
+                    html.H4('Most Returned Product by Store'),
                     dcc.Graph(id='graph3', className='dbc', config=config_graph)
                 ])
             ], style=tab_card)
@@ -105,11 +105,17 @@ app.layout = dbc.Container(children=[
         dbc.Col([
             dbc.Card([
                 dbc.CardBody([
-                    html.Legend(),
+                    html.H4('Value of returns'),
                     dcc.Graph(id='graph4', className='dbc', config=config_graph)
                 ])
             ], style=tab_card)
-        ], sm=12, lg=5)
+        ], sm=12, lg=5),
+        dbc.Col([
+            dbc.Card([
+                dbc.Row([dbc.Col([dcc.Graph(id='Ind1', className='dbc', config=config_graph)])], class_name='g-2 my-auto', style={'margin-top':'7px'}),
+                dbc.Row([dbc.Col([dbc.CardBody([dcc.Graph(id='Ind2', className='dbc', config=config_graph)])])], class_name='g-2 my-auto', style={'margin-top':'7px'})
+            ])
+        ], sm=12, lg=4)
     ], class_name='g-2 my-auto', style={'margin-top':'7px'})
 ], fluid=True, style={'height':'100vh'})
 
@@ -188,10 +194,60 @@ def graph4(toggle):
     fig4=px.bar(Valor_Devolucoes_Loja, x=Valor_Devolucoes_Loja.index, y='Preço Unitário',
             labels={'Preço Unitário':'Preço Unitário'})
     fig4.update_layout(main_config, template=template)
-    fig4.update_layout({"margin": {"l":0, "r":0, "t":5, "b":0}}, height=200)
+    fig4.update_layout({"margin": {"l":0, "r":0, "t":50, "b":0}}, height=200)
 
     return fig4
     
+# Graph 5:
+@app.callback(
+    Output('Ind1', 'figure'),
+    Input(ThemeSwitchAIO.ids.switch("theme"), "value")
+)
+def Ind1(toggle):
+
+    template=template_theme1 if toggle else template_theme2
+
+    Loja_Devolucoes=Lista_Arquivos_Concatenados.groupby(['Loja']).sum()
+    Loja_Devolucoes=Loja_Devolucoes[['Quantidade Devolvida']].sort_values(by='Quantidade Devolvida', ascending=False).reset_index()
+
+# indicador de Loja com mais devoluções:
+
+    Indicador1=go.Figure()
+    Indicador1.add_trace(go.Indicator(
+    mode='number+delta',
+    title={"text": f"<span>{Loja_Devolucoes['Loja'].iloc[0]} - Store Return</span><br><span style='font-size:70%'>Store with more returns of products</span><br>"},
+    value=Loja_Devolucoes['Quantidade Devolvida'].iloc[0],
+    delta={'relative':True, 'reference':Loja_Devolucoes['Quantidade Devolvida'].iloc[1], 'valueformat':'.1%'}))
+    
+
+    Indicador1.update_layout(main_config, template=template)
+    Indicador1.update_layout({"margin": {"l":0, "r":0, "t":50, "b":0}}, height=150)
+    
+    return Indicador1
+
+# Graph 6:
+@app.callback(
+    Output('Ind2', 'figure'),
+    Input(ThemeSwitchAIO.ids.switch("theme"), "value")
+)
+def Ind2(toggle):
+
+    template = template_theme1 if toggle else template_theme2
+
+    Produto_Devolvido_Lojas = Lista_Arquivos_Concatenados.groupby('Produto').sum()
+    Produto_Devolvido_Lojas=Produto_Devolvido_Lojas[['Quantidade Devolvida']].sort_values(by='Quantidade Devolvida', ascending=False).reset_index()
+
+# Indicador de produto com mais devolução:
+    Indicador2=go.Figure(go.Indicator(
+    mode='number+delta',
+    title={"text": f"<span>{Produto_Devolvido_Lojas['Produto'].iloc[0]} - Product Return</span><br><span style='font-size:70%'>Product with more returns between products</span><br>"},
+    value=Produto_Devolvido_Lojas['Quantidade Devolvida'].iloc[0],
+    delta={'relative':True, 'valueformat':'.1%', 'reference':Produto_Devolvido_Lojas['Quantidade Devolvida'].iloc[1]}))  
+    
+    Indicador2.update_layout(main_config, template=template)
+    Indicador2.update_layout({"margin": {"l":0, "r":0, "t":50, "b":0}}, height=150)
+
+    return Indicador2
 # ======== Run Sever ====== #
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8051)
+    app.run_server(debug=False, port=8051)
