@@ -11,8 +11,8 @@ from dash_bootstrap_templates import ThemeSwitchAIO
 
 FONT_AWESOME = "https://use.fontawesome.com/releases/v5.10.2/css/all.css"
 
-app = dash.Dash(__name__, external_stylesheets=[FONT_AWESOME, dbc.themes.QUARTZ])
-app.config.suppress_callback_exceptions = True
+app = dash.Dash(__name__, external_stylesheets=[FONT_AWESOME, dbc.themes.FLATLY])
+# app.config.suppress_callback_exceptions = True
 app.scripts.config.serve_lacally=True
 server=app.server
 
@@ -36,13 +36,10 @@ config_graph = {"displayModeBar":False, "showTips":False}
 
 # ======== Reading and cleaning File
 
-Dataset = pd.read_excel(r"E:\Documentos-Victor\Arquivos_GitHub\Analise-De-Dados-E-Automacao-De-Processos\Projeto_Atualizado_05-Indicadores_de_venda\Vendas.xlsx")
+Dataset = pd.read_excel(r"C:\Users\victo\Documents\GitHub\Analise-De-Dados-E-Automacao-De-Processos\Projeto_Atualizado_05-Indicadores_de_venda\Vendas.xlsx")
 
 Database_Atualizado=Dataset.copy()
 Database_Atualizado.drop('Data', axis=1, inplace=True)
-
-df_1=Database_Atualizado.groupby(['ID Loja'])['Quantidade'].sum().reset_index()
-df_1=df_1.sort_values(by='Quantidade', ascending=False)
 
 # ======== Layout ========== #
     # Primeira Linha:
@@ -80,31 +77,52 @@ app.layout = dbc.Container([
                 dbc.CardBody([
                     dbc.Row([
                         dbc.Col([
-                            dbc.Card([
-                                dcc.Graph(
-                                    id='graph1',
-                                    figure=px.bar(df_1, x=df_1.index, y='Quantidade', labels={'Quantidade': 'Quantidade'},
-                                                  height=200).update_layout(template=dbc.themes.QUARTZ)
-                                    )
-                            ], style=tab_card)
+                            dcc.Graph(id='graph1', className='dbc', config=config_graph)
                         ], style={"margin-top": '10px'}, align='center')
                     ]),
                     dbc.Row([
                         dbc.Col([
-                            dbc.Card([
-                                dcc.Graph(id='graph2', className='dbc', config=config_graph)
-                            ], style=tab_card)
+                            dcc.Graph(id='graph2', className='dbc', config=config_graph)
                         ], style={"margin-top": '10px'}, align='center')
                     ])
                 ])
             ], style=tab_card)
-        ], sm=12, lg=5)
+        ], sm=12, lg=6)
     ], class_name='g-2 my-auto', style={'margin-top': '7px'})
 ], fluid=True, style={'height': '100vh'})
 
 # ======== Callbacks ======== #
 
+@app.callback(
+    Output('graph1', 'figure'),
+    Input('graph1', 'figure')
+)
+def aplicar_template_graph1(fig1):
 
+    df_1=Database_Atualizado.groupby(['ID Loja'])['Quantidade'].sum().reset_index()
+    df_1=df_1.sort_values(by='Quantidade', ascending=False)
+    
+    fig1=px.bar(df_1, x=df_1.index, y='Quantidade', labels={'Quantidade':'Quantidade'}, hover_data=['Quantidade', df_1.index], 
+                color=df_1['Quantidade'])
+    fig1.update_layout(main_config, template='plotly_white', height=200, showlegend=False)
+    fig1.update_layout({"margin": {"l":0, "r":0, "t":5, "b":0}})
+
+    return fig1
+
+@app.callback(
+    Output('graph2', 'figure'),
+    Input('graph2', 'figure')
+)
+def aplicar_template_graph2(fig2):
+    df_2=Database_Atualizado.groupby('ID Loja')['Valor Final'].sum().reset_index()
+    df_2.sort_values(by='Valor Final', ascending=False)
+
+    fig2=px.bar(df_2, x=df_2.index, y='Valor Final', labels={'Valor Final': 'Valor Final'}, hover_data=['Valor Final', df_2.index], 
+                color=df_2['Valor Final'])
+    fig2.update_layout(main_config, template='plotly_white', height=200, showlegend=False)
+    fig2.update_layout({"margin": {"l":0, "r":0, "t":5, "b":0}})
+
+    return fig2
 
 # ====== Run Server ====== # 
 
