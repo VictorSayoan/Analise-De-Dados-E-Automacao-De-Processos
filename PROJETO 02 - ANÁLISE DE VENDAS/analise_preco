@@ -1,0 +1,64 @@
+Loja,Produto,Preco Unitario,Quantidade Vendida,Receita Por Produto
+Belo Horizonte,Android,3400,224,761600
+Belo Horizonte,Câmera,2100,174,365400
+Belo Horizonte,Notebook,3500,213,745500
+Belo Horizonte,SmartWatch,1400,166,232400
+Belo Horizonte,Tablet,1600,194,310400
+Belo Horizonte,Televisão,2500,354,885000
+Belo Horizonte,iPhone,5300,600,3180000
+Curitiba,Android,3400,216,734400
+Curitiba,Câmera,2100,197,413700
+Curitiba,Notebook,3500,284,994000
+Curitiba,SmartWatch,1400,221,309400
+Curitiba,Tablet,1600,155,248000
+Curitiba,Televisão,2500,483,1207500
+Curitiba,iPhone,5300,595,3153500
+Fortaleza,Android,3400,423,1438200
+Fortaleza,Câmera,2100,369,774900
+Fortaleza,Notebook,3500,557,1949500
+Fortaleza,SmartWatch,1400,432,604800
+Fortaleza,Tablet,1600,458,732800
+Fortaleza,Televisão,2500,872,2180000
+Fortaleza,iPhone,5300,1209,6407700
+Goiás,Android,3400,218,741200
+Goiás,Câmera,2100,216,453600
+Goiás,Notebook,3500,210,735000
+Goiás,SmartWatch,1400,229,320600
+Goiás,Tablet,1600,203,324800
+Goiás,Televisão,2500,469,1172500
+Goiás,iPhone,5300,697,3694100
+Porto Alegre,Android,3400,246,836400
+Porto Alegre,Câmera,2100,226,474600
+Porto Alegre,Notebook,3500,248,868000
+Porto Alegre,SmartWatch,1400,171,239400
+Porto Alegre,Tablet,1600,214,342400
+Porto Alegre,Televisão,2500,422,1055000
+Porto Alegre,iPhone,5300,576,3052800
+Recife,Android,3400,202,686800
+Recife,Câmera,2100,204,428400
+Recife,Notebook,3500,191,668500
+Recife,SmartWatch,1400,207,289800
+Recife,Tablet,1600,261,417600
+Recife,Televisão,2500,445,1112500
+Recife,iPhone,5300,698,3699400
+Rio de Janeiro,Android,3400,480,1632000
+Rio de Janeiro,Câmera,2100,408,856800
+Rio de Janeiro,Notebook,3500,410,1435000
+Rio de Janeiro,SmartWatch,1400,426,596400
+Rio de Janeiro,Tablet,1600,409,654400
+Rio de Janeiro,Televisão,2500,816,2040000
+Rio de Janeiro,iPhone,5300,1444,7653200
+Salvador,Android,3400,416,1414400
+Salvador,Câmera,2100,358,751800
+Salvador,Notebook,3500,414,1449000
+Salvador,SmartWatch,1400,474,663600
+Salvador,Tablet,1600,408,652800
+Salvador,Televisão,2500,783,1957500
+Salvador,iPhone,5300,1174,6222200
+São Paulo,Android,3400,758,2577200
+São Paulo,Câmera,2100,653,1371300
+São Paulo,Notebook,3500,722,2527000
+São Paulo,SmartWatch,1400,654,915600
+São Paulo,Tablet,1600,619,990400
+São Paulo,Televisão,2500,1287,3217500
+São Paulo,iPhone,5300,1981,10499300
